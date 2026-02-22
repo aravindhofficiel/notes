@@ -78,28 +78,30 @@ export default function Dashboard() {
 
   /* ================= UI ================= */
 
-  return (
-    <div style={dashboard}>
-      <div style={topBar}>
-        <h2>Dashboard</h2>
+ return (
+  <div style={page}>
+    <div style={container}>
+      
+      <div style={header}>
+        <h2 style={titleStyle}>Your Notes</h2>
         <button onClick={logout} style={logoutButton}>
           Logout
         </button>
       </div>
 
-      <div style={form}>
+      <div style={cardForm}>
         <input
-          placeholder="Title"
+          placeholder="Note title..."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           style={input}
         />
 
         <textarea
-          placeholder="Content"
+          placeholder="Write your note..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          style={input}
+          style={textarea}
         />
 
         <button onClick={addNote} style={primaryButton}>
@@ -109,61 +111,86 @@ export default function Dashboard() {
 
       <div style={grid}>
         {notes.map((note) => (
-          <div key={note._id} style={card}>
-            <h3>{note.title}</h3>
-            <p>{note.content}</p>
+          <div key={note._id} style={noteCard}>
+            <h3 style={{ marginBottom: "8px" }}>{note.title}</h3>
+            <p style={{ opacity: 0.8 }}>{note.content}</p>
           </div>
         ))}
       </div>
+
     </div>
-  );
+  </div>
+);
 }
 
 /* ================= STYLES ================= */
-
-const dashboard = {
-  padding: "40px",
-  maxWidth: "1000px",
-  margin: "auto",
-  fontFamily: "Arial, sans-serif"
+const page = {
+  minHeight: "100vh",
+  background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
+  padding: "40px 20px"
 };
 
-const topBar = {
+const container = {
+  maxWidth: "1000px",
+  margin: "auto"
+};
+
+const header = {
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
   marginBottom: "30px"
 };
 
-const form = {
+const titleStyle = {
+  fontSize: "28px",
+  fontWeight: "600",
+  color: "#1e293b"
+};
+
+const cardForm = {
+  background: "white",
+  padding: "25px",
+  borderRadius: "16px",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
   display: "flex",
   flexDirection: "column",
-  gap: "10px",
+  gap: "12px",
   marginBottom: "30px"
 };
 
 const input = {
-  padding: "10px",
-  fontSize: "16px",
-  borderRadius: "5px",
-  border: "1px solid #ccc"
+  padding: "12px",
+  borderRadius: "8px",
+  border: "1px solid #e2e8f0",
+  fontSize: "14px"
+};
+
+const textarea = {
+  padding: "12px",
+  borderRadius: "8px",
+  border: "1px solid #e2e8f0",
+  fontSize: "14px",
+  minHeight: "90px"
 };
 
 const primaryButton = {
-  padding: "10px",
+  padding: "12px",
+  borderRadius: "8px",
+  border: "none",
   backgroundColor: "#2563eb",
   color: "white",
-  border: "none",
-  cursor: "pointer",
-  borderRadius: "5px"
+  fontWeight: "500",
+  cursor: "pointer"
 };
 
 const logoutButton = {
-  padding: "6px 12px",
-  backgroundColor: "#dc3545",
-  color: "white",
+  padding: "8px 16px",
+  borderRadius: "8px",
   border: "none",
-  cursor: "pointer",
-  borderRadius: "5px"
+  backgroundColor: "#ef4444",
+  color: "white",
+  cursor: "pointer"
 };
 
 const grid = {
@@ -172,10 +199,10 @@ const grid = {
   gap: "20px"
 };
 
-const card = {
+const noteCard = {
+  background: "white",
   padding: "20px",
-  borderRadius: "10px",
-  background: "#ffffff",
-  boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
-  color: "#111827"
+  borderRadius: "16px",
+  boxShadow: "0 8px 25px rgba(0,0,0,0.05)",
+  color: "#1e293b"
 };
