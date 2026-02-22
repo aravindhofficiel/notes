@@ -60,7 +60,7 @@ const page = {
   justifyContent: "center",
   alignItems: "center",
   background: "linear-gradient(135deg, #667eea, #764ba2)",
-  margin: 0
+  padding: "40px 50px"
 };
 
 const glassCard = {
