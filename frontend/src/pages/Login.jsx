@@ -55,17 +55,18 @@ export default function Login() {
 
 const page = {
   minHeight: "100vh",
+  width: "100%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: "20px",
-  background: "linear-gradient(135deg, #667eea, #764ba2)"
+  background: "linear-gradient(135deg, #667eea, #764ba2)",
+  margin: 0
 };
 
 const glassCard = {
-  width: "100%",
-  maxWidth: "380px",
-  padding: "40px 30px",
+  width: "90%",
+  maxWidth: "420px",
+  padding: "40px 25px",
   borderRadius: "20px",
   backdropFilter: "blur(20px)",
   background: "rgba(255,255,255,0.15)",
@@ -76,7 +77,6 @@ const glassCard = {
   gap: "15px",
   color: "white"
 };
-
 const title = {
   textAlign: "center",
   marginBottom: "10px",
