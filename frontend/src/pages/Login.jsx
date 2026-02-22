@@ -9,15 +9,17 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const login = async () => {
-    try {
-      const res = await axios.post(`${API}/login`, { email, password });
-      localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
-    } catch (err) {
-      alert("Invalid credentials");
-    }
-  };
+ const login = async () => {
+  try {
+    const res = await axios.post(`${API}/login`, { email, password });
+
+    localStorage.setItem("token", res.data.token);
+
+    window.location.href = "/dashboard";
+  } catch {
+    alert("Invalid credentials");
+  }
+};
 
   return (
     <div style={authContainer}>
