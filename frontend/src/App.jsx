@@ -8,22 +8,31 @@ function App() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  // ✅ fetch function
+  const fetchNotes = async () => {
+    try {
+      const res = await axios.get(`${API}/notes`);
+      setNotes(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    axios.get(`${API}/notes`)
-      .then(res => setNotes(res.data))
-      .catch(err => console.log(err));
+    fetchNotes();
   }, []);
 
   const addNote = async () => {
-    const res = await axios.post(`${API}/notes`, { title, content });
-    setNotes([...notes, res.data]);
+    await axios.post(`${API}/notes`, { title, content });
     setTitle("");
     setContent("");
+    fetchNotes();
   };
+
   const deleteNote = async (id) => {
-  await axios.delete(`${API}/notes/${id}`);
-  fetchNotes();
-};
+    await axios.delete(`${API}/notes/${id}`);
+    fetchNotes();
+  };
 
   return (
     <div style={{ padding: "30px" }}>
@@ -32,28 +41,28 @@ function App() {
       <input
         placeholder="Title"
         value={title}
-        onChange={e => setTitle(e.target.value)}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <br />
       <textarea
         placeholder="Content"
         value={content}
-        onChange={e => setContent(e.target.value)}
+        onChange={(e) => setContent(e.target.value)}
       />
       <br />
       <button onClick={addNote}>Add Note</button>
 
       <hr />
 
-     {notes.map(note => (
-  <div key={note._id} style={{ marginBottom: "20px" }}>
-    <h3>{note.title}</h3>
-    <p>{note.content}</p>
-    <button onClick={() => deleteNote(note._id)}>
-      Delete
-    </button>
-  </div>
-))}
+      {notes.map((note) => (
+        <div key={note._id} style={{ marginBottom: "20px" }}>
+          <h3>{note.title}</h3>
+          <p>{note.content}</p>
+          <button onClick={() => deleteNote(note._id)}>
+            Delete
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
