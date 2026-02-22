@@ -24,6 +24,7 @@ app.get("/notes", async (req, res) => {
   res.json(notes);
 });
 
+
 app.post("/notes", async (req, res) => {
   const newNote = new Note(req.body);
   await newNote.save();
