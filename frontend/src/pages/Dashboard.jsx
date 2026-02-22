@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -9,64 +8,46 @@ export default function Dashboard() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
   /* ================= LOGOUT ================= */
 
   const logout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    window.location.replace("/");
   };
 
-  /* ================= TOKEN CHECK ================= */
+  /* ================= FETCH NOTES ================= */
 
-  const checkExpiry = () => {
-    if (!token) {
-      navigate("/");
-      return;
-    }
-
+  const fetchNotes = async (currentToken) => {
     try {
-      const decoded = jwtDecode(token);
-
-      if (decoded.exp * 1000 < Date.now()) {
-        logout();
-      }
+      const res = await axios.get(`${API}/notes`, {
+        headers: { Authorization: currentToken }
+      });
+      setNotes(res.data);
     } catch {
       logout();
     }
   };
 
-  /* ================= NOTES ================= */
-
-  const fetchNotes = async () => {
-    try {
-      const res = await axios.get(`${API}/notes`, {
-        headers: { Authorization: token }
-      });
-      setNotes(res.data);
-    } catch (error) {
-      console.log(error);
-      logout();
-    }
-  };
+  /* ================= ADD NOTE ================= */
 
   const addNote = async () => {
+    const currentToken = localStorage.getItem("token");
+    if (!currentToken) return logout();
+
     if (!title.trim() || !content.trim()) return;
 
     try {
       await axios.post(
         `${API}/notes`,
         { title, content },
-        { headers: { Authorization: token } }
+        { headers: { Authorization: currentToken } }
       );
 
       setTitle("");
       setContent("");
-      fetchNotes();
-    } catch (error) {
-      console.log(error);
+      fetchNotes(currentToken);
+    } catch {
       logout();
     }
   };
@@ -74,14 +55,26 @@ export default function Dashboard() {
   /* ================= LIFECYCLE ================= */
 
   useEffect(() => {
-    if (!token) {
-      navigate("/");
+    const currentToken = localStorage.getItem("token");
+
+    if (!currentToken) {
+      window.location.replace("/");
       return;
     }
 
-    checkExpiry();
-    fetchNotes();
-  }, [token]);
+    try {
+      const decoded = jwtDecode(currentToken);
+
+      if (decoded.exp * 1000 < Date.now()) {
+        logout();
+        return;
+      }
+
+      fetchNotes(currentToken);
+    } catch {
+      logout();
+    }
+  }, []);
 
   /* ================= UI ================= */
 
@@ -98,14 +91,14 @@ export default function Dashboard() {
         <input
           placeholder="Title"
           value={title}
-          onChange={e => setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
           style={input}
         />
 
         <textarea
           placeholder="Content"
           value={content}
-          onChange={e => setContent(e.target.value)}
+          onChange={(e) => setContent(e.target.value)}
           style={input}
         />
 
@@ -115,7 +108,7 @@ export default function Dashboard() {
       </div>
 
       <div style={grid}>
-        {notes.map(note => (
+        {notes.map((note) => (
           <div key={note._id} style={card}>
             <h3>{note.title}</h3>
             <p>{note.content}</p>
@@ -157,7 +150,7 @@ const input = {
 
 const primaryButton = {
   padding: "10px",
-  backgroundColor: "#007bff",
+  backgroundColor: "#2563eb",
   color: "white",
   border: "none",
   cursor: "pointer",
@@ -183,5 +176,6 @@ const card = {
   padding: "20px",
   borderRadius: "10px",
   background: "#ffffff",
-  boxShadow: "0 5px 15px rgba(0,0,0,0.1)"
+  boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+  color: "#111827"
 };
