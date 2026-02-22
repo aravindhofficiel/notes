@@ -63,7 +63,7 @@ const page = {
 };
 
 const glassCard = {
-  width: "100%",
+  width: "150%",
   maxWidth: "600px",
   padding: "40px 30px",
   borderRadius: "20px",
