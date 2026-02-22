@@ -41,6 +41,18 @@ app.delete("/notes/:id", async (req, res) => {
     res.status(500).json({ error: "Delete failed" });
   }
 });
+app.put("/notes/:id", async (req, res) => {
+  try {
+    const updatedNote = await Note.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json(updatedNote);
+  } catch (error) {
+    res.status(500).json({ error: "Update failed" });
+  }
+});
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
