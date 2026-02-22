@@ -28,6 +28,7 @@ body {
   place-items: center;
   min-width: 20px;
   min-height: 100vh;
+  border:2px solid red;
 }
 
 h1 {
