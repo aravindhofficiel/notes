@@ -127,7 +127,7 @@ export default function Dashboard() {
 const page = {
   minHeight: "100vh",
   background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
-  padding: "40px 20px",
+  padding: "40px 100px",
   border: "6px solid rgba(0,0,0,0.05)"
 };
 
