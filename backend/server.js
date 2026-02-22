@@ -24,13 +24,23 @@ app.get("/notes", async (req, res) => {
   res.json(notes);
 });
 
+app.get("/", (req, res) => {
+  res.send("Backend is working");
+});
 
 app.post("/notes", async (req, res) => {
   const newNote = new Note(req.body);
   await newNote.save();
   res.json(newNote);
 });
-
+app.delete("/notes/:id", async (req, res) => {
+  try {
+    await Note.findByIdAndDelete(req.params.id);
+    res.json({ message: "Deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Delete failed" });
+  }
+});
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
