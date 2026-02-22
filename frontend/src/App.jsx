@@ -20,6 +20,10 @@ function App() {
     setTitle("");
     setContent("");
   };
+  const deleteNote = async (id) => {
+  await axios.delete(`${API}/notes/${id}`);
+  fetchNotes();
+};
 
   return (
     <div style={{ padding: "30px" }}>
@@ -41,12 +45,15 @@ function App() {
 
       <hr />
 
-      {notes.map(note => (
-        <div key={note._id}>
-          <h3>{note.title}</h3>
-          <p>{note.content}</p>
-        </div>
-      ))}
+     {notes.map(note => (
+  <div key={note._id} style={{ marginBottom: "20px" }}>
+    <h3>{note.title}</h3>
+    <p>{note.content}</p>
+    <button onClick={() => deleteNote(note._id)}>
+      Delete
+    </button>
+  </div>
+))}
     </div>
   );
 }
